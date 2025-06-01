@@ -16,6 +16,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Poppins",
         primaryColor: Colors.blue,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Colors.blue,
+          primaryContainer: Colors.white,
+        ),
+        dataTableTheme: DataTableThemeData(
+          dataRowColor: WidgetStateProperty.all(Colors.white),
+          headingRowColor: WidgetStateProperty.all(Colors.white),
+          decoration: BoxDecoration(
+            color: Colors.white,
+          )
+        ),
+        cardColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
         secondaryHeaderColor: Color.fromARGB(255, 46, 52, 49),
         appBarTheme: AppBarTheme(

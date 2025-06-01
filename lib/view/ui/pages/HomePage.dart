@@ -37,7 +37,12 @@ class _HomePageState extends State<HomePage> {
               }
             ),
           ),
-          pages[selected]
+          Expanded(
+            child: IndexedStack(
+              index: selected,
+              children: pages,
+            ),
+          )
         ],
       ),
     );
