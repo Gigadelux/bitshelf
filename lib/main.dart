@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bitshelf/view/ui/pages/HomePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,42 +14,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        fontFamily: "Poppins",
+        primaryColor: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        secondaryHeaderColor: Color.fromARGB(255, 46, 52, 49),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.blue
+        ),
+        buttonTheme: ButtonThemeData(buttonColor: const Color.fromARGB(255, 0, 94, 255),)
       ),
       home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('Hello world'),
-          ],
-        ),
-      ),
     );
   }
 }

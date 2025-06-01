@@ -2,12 +2,16 @@
 import 'dart:convert';
 
 class Book {
+  late String _id;
   late String _title;
   late String _author;
   late String _codeISBN;
   late String _genre;
   late int _review; // da 1 a 5 stelle
   late String _status; // es. "letto", "da leggere", "in lettura"
+
+  String get id => _id;
+  set id(String value) => _id = value;
 
   String get title => _title;
   set title(String value) => _title = value;
@@ -35,13 +39,15 @@ class Book {
   }
   
   Book._({
+    required String id,
     required int review,
     required String title,
     required String author,
     required String codeISBN,
     required String genre,
     required String status,
-  })  : _review = review,
+  })  : _id = id,
+        _review = review,
         _title = title,
         _author = author,
         _codeISBN = codeISBN,
@@ -50,6 +56,7 @@ class Book {
   
   // Public factory constructor with review validation (between 1 and 5)
   factory Book({
+    required String id,
     required int review,
     required String title,
     required String author,
@@ -62,6 +69,7 @@ class Book {
     }
 
     return Book._(
+      id: id,
       review: review,
       title: title,
       author: author,
@@ -72,6 +80,7 @@ class Book {
   }
 
   Book copyWith({
+    String? id,
     String? title,
     String? author,
     String? codeISBN,
@@ -80,6 +89,7 @@ class Book {
     String? status,
   }) {
     return Book(
+      id: id ?? this.id,
       title: title ?? this.title,
       author: author ?? this.author,
       codeISBN: codeISBN ?? this.codeISBN,
@@ -91,6 +101,7 @@ class Book {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'title': title,
       'author': author,
       'codeISBN': codeISBN,
@@ -102,6 +113,7 @@ class Book {
 
   factory Book.fromMap(Map<String, dynamic> map) {
     return Book(
+      id: map['id'] as String,
       title: map['title'] as String,
       author: map['author'] as String,
       codeISBN: map['codeISBN'] as String,
@@ -117,7 +129,7 @@ class Book {
 
   @override
   String toString() {
-    return 'Book(title: $title, author: $author, codeISBN: $codeISBN, genre: $genre, review: $review, status: $status)';
+    return 'Book(id: $id, title: $title, author: $author, codeISBN: $codeISBN, genre: $genre, review: $review, status: $status)';
   }
 
   @override
@@ -125,6 +137,7 @@ class Book {
     if (identical(this, other)) return true;
   
     return 
+      other.id == id &&
       other.title == title &&
       other.author == author &&
       other.codeISBN == codeISBN &&
@@ -135,7 +148,8 @@ class Book {
 
   @override
   int get hashCode {
-    return title.hashCode ^
+    return id.hashCode ^
+      title.hashCode ^
       author.hashCode ^
       codeISBN.hashCode ^
       genre.hashCode ^
