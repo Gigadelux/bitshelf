@@ -1,7 +1,7 @@
 # 📚 Bitshelf
 
 A cross-platform **Flutter** application to manage your personal library of books with full **CRUD** functionality.
-Built using **Flutter 3.x** and the clean **MVVM (Model-View-ViewModel)** architecture.
+Built using **Flutter 3.x** and a clean **MVC (Model-View-Controller)** architecture.
 
 ---
 
@@ -17,17 +17,25 @@ Built using **Flutter 3.x** and the clean **MVVM (Model-View-ViewModel)** archit
 
 ---
 
-## 🧠 Architecture – MVVM Pattern
+## 🧠 Architecture – MVC Pattern
 
 ```bash
 lib/
-├── main.dart               # Entry point
-├── models/                # Data classes (e.g., Book)
-├── views/                 # UI screens and widgets
-├── viewmodels/            # State management logic (e.g., using Provider, Riverpod, or BLoC)
-├── services/              # Business logic and data operations
-├── repositories/          # Abstracted data storage logic (e.g., database handlers)
-└── utils/                 # Utility functions and constants
+├── main.dart                # Entry point
+├── controllers/             # Controllers (business logic, state management)
+├── core/                    # App configuration and core utilities
+├── data/                    # Data models, gateways, repositories
+│   ├── models/              # Data classes (e.g., Book)
+│   ├── gateway/             # Data access (local, remote, fake)
+│   └── repository/          # Abstracted data storage logic
+├── services/                # Business logic and data operations
+│   ├── auth/                # Authentication services
+│   ├── encryption/          # Encryption utilities
+│   └── Filter/              # Filtering and search logic
+├── view/                    # UI screens, widgets, and assets
+│   ├── ui/                  # UI widgets and pages
+│   ├── presenter/           # Presentation logic (if any)
+│   └── assets/              # Images and fonts
 ```
 
 ---
