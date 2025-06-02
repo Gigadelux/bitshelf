@@ -1,7 +1,9 @@
 import 'package:bitshelf/controllers/BookController.dart';
 import 'package:bitshelf/data/models/Book.dart';
+import 'package:bitshelf/services/BookDatasetService.dart';
 import 'package:bitshelf/view/ui/widgets/bookTable.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Bookpage extends StatefulWidget {
   const Bookpage({super.key});
@@ -11,10 +13,14 @@ class Bookpage extends StatefulWidget {
 }
 
 class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
-  List<Book> booksData = [];
+
+  Bookcontroller bookcontroller = Bookcontroller();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final dataset = Provider.of<BookDatasetService>(context);
+    List<Book> booksData = dataset.books;
     return Container(
       child: Column(
         children: [
@@ -50,11 +56,7 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
                         borderRadius: BorderRadius.circular(12),
                       ),
                       onPressed: ()async{
-                        // ignore: await_only_futures
-                        List<Book> loaded = await Bookcontroller().load_books();
-                        setState(() {
-                          booksData = loaded;
-                        });
+                        await bookcontroller.load_books();
                       },
                       child: Padding(
                         padding: EdgeInsets.all(10),

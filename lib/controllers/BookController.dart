@@ -1,8 +1,9 @@
 import 'package:bitshelf/core/AppConfig.dart';
 import 'package:bitshelf/data/models/Book.dart';
+import 'package:bitshelf/services/BookDatasetService.dart';
 
 class Bookcontroller {
-  Future<List<Book>> load_books(){
-    return Appconfig().bookRepository.getAll() as Future<List<Book>>;
+  Future<void> load_books()async{
+     BookDatasetService().setBooks(await Appconfig().bookRepository.getAll());
   }
 }

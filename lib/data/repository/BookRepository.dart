@@ -1,6 +1,9 @@
 
+import 'package:bitshelf/data/models/Book.dart';
+
 abstract class BookRepository {
   BookRepository();
 
-  Future<List<dynamic>> getAll();
+  Future<List<Book>> getAll();
+
 }

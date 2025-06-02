@@ -1,8 +1,17 @@
+import 'package:bitshelf/services/BookDatasetService.dart';
 import 'package:flutter/material.dart';
 import 'package:bitshelf/view/ui/pages/HomePage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => BookDatasetService()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
