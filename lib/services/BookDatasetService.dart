@@ -1,5 +1,8 @@
 // lib/services/book_dataset.dart
+import 'package:bitshelf/core/AppConfig.dart';
+import 'package:bitshelf/core/BookCRUDStrategy/BookDataStrategy.dart';
 import 'package:bitshelf/data/models/Book.dart';
+import 'package:bitshelf/data/repository/BookRepository.dart';
 import 'package:flutter/foundation.dart';
 
 class BookDatasetService extends ChangeNotifier { //Observer pattern
@@ -11,20 +14,29 @@ class BookDatasetService extends ChangeNotifier { //Observer pattern
 
   List<Book> get books => List.unmodifiable(_books);
 
-  void addBook(Book book) {
+  Future<void> addBook(Book book) async{
+    Bookdatastrategy gatewayStrategy = Appconfig().bookDataStrategy;
+    await gatewayStrategy.add(book);
     _books.add(book);
     notifyListeners();
   }
 
-  void removeBook(Book book) {
+  Future<void> removeBook(Book book) async{
+    Bookdatastrategy gatewayStrategy = Appconfig().bookDataStrategy;
+    await gatewayStrategy.delete(book.id);
     _books.remove(book);
     notifyListeners();
   }
 
-  void setBooks(List<Book> books) {
+  Future<void> importBooks() async{
+    BookRepository gatewayRepository = Appconfig().bookRepository;
     _books
       ..clear()
-      ..addAll(books);
+      ..addAll(await gatewayRepository.getAll());
     notifyListeners();
+  }
+  Future<void> applyChanges() async{
+    Bookdatastrategy bookdatastrategy = Appconfig().bookDataStrategy;
+    bookdatastrategy.commit();
   }
 }

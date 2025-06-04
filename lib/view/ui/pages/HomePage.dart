@@ -1,5 +1,5 @@
 
-import 'package:bitshelf/view/ui/pages/BookPage.dart';
+import 'package:bitshelf/view/ui/pages/BookPages/BookPage.dart';
 import 'package:bitshelf/view/ui/pages/ProfilePage.dart';
 import 'package:bitshelf/view/ui/pages/SettingPage.dart';
 import 'package:bitshelf/view/ui/widgets/NavigatorButton.dart';
