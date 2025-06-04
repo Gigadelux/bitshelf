@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class Book {
-  late String _id;
+  late final String _id;
   late String _title;
   late String _author;
   late String _codeISBN;

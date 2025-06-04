@@ -35,6 +35,15 @@ class BookDatasetService extends ChangeNotifier { //Observer pattern
       ..addAll(await gatewayRepository.getAll());
     notifyListeners();
   }
+  Future<void> updateBook(Book oldBook, Book newBook) async {
+    Bookdatastrategy gatewayStrategy = Appconfig().bookDataStrategy;
+    await gatewayStrategy.update(newBook);
+    int index = _books.indexOf(oldBook);
+    if (index != -1) {
+      _books[index] = newBook;
+      notifyListeners();
+    }
+  }
   Future<void> applyChanges() async{
     Bookdatastrategy bookdatastrategy = Appconfig().bookDataStrategy;
     bookdatastrategy.commit();

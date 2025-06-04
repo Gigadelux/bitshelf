@@ -30,7 +30,7 @@ class Bookdeferreddatastrategy extends Bookdatastrategy{
   @override
   Future<void> update(Book book) async{
     try{
-      _pending[book] = CrudOperation.delete;
+      _pending[book] = CrudOperation.update;
     }catch(e){
       print("Error in cached memory: book of id${book.id} does not exist");
       return Future.value();
