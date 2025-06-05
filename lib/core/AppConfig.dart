@@ -8,14 +8,20 @@ class Appconfig { //State pattern
 
   late BookRepository bookRepository;
   late Bookdatastrategy bookDataStrategy;
+  late Map<String, String> gatewayConfig;
 
   factory Appconfig() {
     return _instance;
   }
 
   Appconfig._internal() { //default
-    bookRepository = BookFakeGateway();
+    gatewayConfig = {"dbUrl":"","csv_path":"","csv_max_MB":""}; //MB
+    bookRepository = BookFakeGateway(gatewayConfig);
     bookDataStrategy = Bookfluxdatastrategy(bookRepository);
+  }
+  void updateGatewayConfig(Map<String,String> newConfig){
+    gatewayConfig = newConfig;
+    bookRepository.config = newConfig;
   }
   void updateRepository(BookRepository newbookRepository){
     bookRepository = newbookRepository;

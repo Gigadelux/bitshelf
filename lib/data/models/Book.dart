@@ -78,6 +78,31 @@ class Book {
       status: status,
     );
   }
+  factory Book.empty() {
+    return Book(
+      id: '',
+      title: '',
+      author: '',
+      codeISBN: '',
+      genre: '',
+      review: 1,
+      status: '',
+    );
+  }
+  factory Book.fromList(List<dynamic> list) {
+    if (list.length != 7) {
+      throw ArgumentError('List must have exactly 7 elements');
+    }
+    return Book(
+      id: list[0] as String,
+      title: list[1] as String,
+      author: list[2] as String,
+      codeISBN: list[3] as String,
+      genre: list[4] as String,
+      review: list[5] as int,
+      status: list[6] as String,
+    );
+  }
 
   Book copyWith({
     String? id,

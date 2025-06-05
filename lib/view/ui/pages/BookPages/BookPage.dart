@@ -19,7 +19,7 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final dataset = Provider.of<BookDatasetService>(context);
+    final dataset = Provider.of<BookDatasetService>(context); //subscribe
     List<Book> booksData = dataset.books;
     return Container(
       child: Column(

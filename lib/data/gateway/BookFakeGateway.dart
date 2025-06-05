@@ -2,7 +2,7 @@ import 'package:bitshelf/data/repository/BookRepository.dart';
 import 'package:bitshelf/data/models/Book.dart';
 
 class BookFakeGateway extends BookRepository{
-  BookFakeGateway() : super();
+  BookFakeGateway(super.config);
 
   @override
   Future<List<Book>> getAll() {
@@ -57,31 +57,26 @@ class BookFakeGateway extends BookRepository{
   
   @override
   Future<void> add(Book book) {
-    // TODO: implement add
     throw UnimplementedError();
   }
   
   @override
   Future<void> delete(String id) {
-    // TODO: implement delete
     throw UnimplementedError();
   }
   
   @override
   Future<Book?> getById(String id) {
-    // TODO: implement getById
     throw UnimplementedError();
   }
   
   @override
   Future<void> update(Book book) {
-    // TODO: implement update
     throw UnimplementedError();
   }
   
   @override
   Future<void> export(List<Book> toExport) {
-    // TODO: implement export
     throw UnimplementedError();
   }
   

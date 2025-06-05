@@ -1,6 +1,7 @@
 // lib/services/book_dataset.dart
 import 'package:bitshelf/core/AppConfig.dart';
 import 'package:bitshelf/core/BookCRUDStrategy/BookDataStrategy.dart';
+import 'package:bitshelf/core/BookCRUDStrategy/BookDeferredDataStrategy.dart';
 import 'package:bitshelf/data/models/Book.dart';
 import 'package:bitshelf/data/repository/BookRepository.dart';
 import 'package:flutter/foundation.dart';
@@ -11,13 +12,23 @@ class BookDatasetService extends ChangeNotifier { //Observer pattern
   BookDatasetService._internal();
 
   final List<Book> _books = [];
+  Map<Book, CrudOperation> _pending = {};
 
   List<Book> get books => List.unmodifiable(_books);
+  Map<Book,CrudOperation> get pendingOperations => Map.unmodifiable(_pending); //redundant unmodifiable
+
+  void getPendings(){
+    try{
+      Map<Book,CrudOperation> pendingOps = (Appconfig().bookDataStrategy as Bookdeferreddatastrategy).pending_edits;
+      _pending = pendingOps;
+    }catch(e){print("not pending operations, continue...");}
+  }
 
   Future<void> addBook(Book book) async{
     Bookdatastrategy gatewayStrategy = Appconfig().bookDataStrategy;
     await gatewayStrategy.add(book);
     _books.add(book);
+    getPendings();
     notifyListeners();
   }
 
@@ -25,6 +36,7 @@ class BookDatasetService extends ChangeNotifier { //Observer pattern
     Bookdatastrategy gatewayStrategy = Appconfig().bookDataStrategy;
     await gatewayStrategy.delete(book.id);
     _books.remove(book);
+    getPendings();
     notifyListeners();
   }
 
@@ -41,6 +53,7 @@ class BookDatasetService extends ChangeNotifier { //Observer pattern
     int index = _books.indexOf(oldBook);
     if (index != -1) {
       _books[index] = newBook;
+      getPendings();
       notifyListeners();
     }
   }
