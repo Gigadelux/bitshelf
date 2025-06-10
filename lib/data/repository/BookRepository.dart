@@ -8,9 +8,8 @@ abstract class BookRepository {
   set config(Map<String, dynamic> value) => _config = value;
 
   Future<List<Book>> getAll();
-  Future<Book?> getById(String id);
+  Future<Book?> getByTitleAndAuthor(String title,String author);
   Future<void> add(Book book);
   Future<void> update(Book book);
-  Future<void> delete(String id);
-  Future<void> export(List<Book> toExport);
+  Future<void> delete(Book book);
 }

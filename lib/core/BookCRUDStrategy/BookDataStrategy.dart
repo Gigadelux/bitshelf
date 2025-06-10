@@ -8,6 +8,6 @@ abstract class Bookdatastrategy {
 
   Future<void> add(Book book);
   Future<void> update(Book book);
-  Future<void> delete(String id);
+  Future<void> delete(Book book);
   Future<void> commit(); //Only deferredStrategy
 }

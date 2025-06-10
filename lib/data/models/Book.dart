@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 class Book {
-  late final String _id;
   late String _title;
   late String _author;
   late String _codeISBN;
@@ -10,9 +9,7 @@ class Book {
   late int _review; // da 1 a 5 stelle
   late String _status; // es. "letto", "da leggere", "in lettura"
 
-  String get id => _id;
-  set id(String value) => _id = value;
-
+  // Primary keys
   String get title => _title;
   set title(String value) => _title = value;
 
@@ -39,27 +36,24 @@ class Book {
   }
   
   Book._({
-    required String id,
-    required int review,
     required String title,
     required String author,
+    required int review,
     required String codeISBN,
     required String genre,
     required String status,
-  })  : _id = id,
-        _review = review,
-        _title = title,
+  })  : _title = title,
         _author = author,
+        _review = review,
         _codeISBN = codeISBN,
         _genre = genre,
         _status = status;
   
   // Public factory constructor with review validation (between 1 and 5)
   factory Book({
-    required String id,
-    required int review,
     required String title,
     required String author,
+    required int review,
     required String codeISBN,
     required String genre,
     required String status,
@@ -67,12 +61,10 @@ class Book {
     if (review < 1 || review > 5) {
       throw RangeError.range(review, 1, 5, 'review', 'Review must be between 1 and 5');
     }
-
     return Book._(
-      id: id,
-      review: review,
       title: title,
       author: author,
+      review: review,
       codeISBN: codeISBN,
       genre: genre,
       status: status,
@@ -80,7 +72,6 @@ class Book {
   }
   factory Book.empty() {
     return Book(
-      id: '',
       title: '',
       author: '',
       codeISBN: '',
@@ -90,22 +81,20 @@ class Book {
     );
   }
   factory Book.fromList(List<dynamic> list) {
-    if (list.length != 7) {
-      throw ArgumentError('List must have exactly 7 elements');
+    if (list.length != 6) {
+      throw ArgumentError('List must have exactly 6 elements');
     }
     return Book(
-      id: list[0] as String,
-      title: list[1] as String,
-      author: list[2] as String,
-      codeISBN: list[3] as String,
-      genre: list[4] as String,
-      review: list[5] as int,
-      status: list[6] as String,
+      title: list[0] as String,
+      author: list[1] as String,
+      codeISBN: list[2] as String,
+      genre: list[3] as String,
+      review: list[4] as int,
+      status: list[5] as String,
     );
   }
 
   Book copyWith({
-    String? id,
     String? title,
     String? author,
     String? codeISBN,
@@ -114,7 +103,6 @@ class Book {
     String? status,
   }) {
     return Book(
-      id: id ?? this.id,
       title: title ?? this.title,
       author: author ?? this.author,
       codeISBN: codeISBN ?? this.codeISBN,
@@ -126,7 +114,6 @@ class Book {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'title': title,
       'author': author,
       'codeISBN': codeISBN,
@@ -138,7 +125,6 @@ class Book {
 
   factory Book.fromMap(Map<String, dynamic> map) {
     return Book(
-      id: map['id'] as String,
       title: map['title'] as String,
       author: map['author'] as String,
       codeISBN: map['codeISBN'] as String,
@@ -152,9 +138,30 @@ class Book {
 
   factory Book.fromJson(String source) => Book.fromMap(json.decode(source) as Map<String, dynamic>);
 
+  static void check(Book book) {
+    if (book.title.isEmpty) {
+      throw ArgumentError('Book title cannot be empty');
+    }
+    if (book.author.isEmpty) {
+      throw ArgumentError('Book author cannot be empty');
+    }
+    if (book.codeISBN.isEmpty) {
+      throw ArgumentError('Book codeISBN cannot be empty');
+    }
+    if (book.genre.isEmpty) {
+      throw ArgumentError('Book genre cannot be empty');
+    }
+    if (book.review < 1 || book.review > 5) {
+      throw ArgumentError('Book review must be between 1 and 5');
+    }
+    if (book.status.isEmpty) {
+      throw ArgumentError('Book status cannot be empty');
+    }
+  }
+
   @override
   String toString() {
-    return 'Book(id: $id, title: $title, author: $author, codeISBN: $codeISBN, genre: $genre, review: $review, status: $status)';
+    return 'Book(title: $title, author: $author, codeISBN: $codeISBN, genre: $genre, review: $review, status: $status)';
   }
 
   @override
@@ -162,7 +169,6 @@ class Book {
     if (identical(this, other)) return true;
   
     return 
-      other.id == id &&
       other.title == title &&
       other.author == author &&
       other.codeISBN == codeISBN &&
@@ -173,8 +179,7 @@ class Book {
 
   @override
   int get hashCode {
-    return id.hashCode ^
-      title.hashCode ^
+    return title.hashCode ^
       author.hashCode ^
       codeISBN.hashCode ^
       genre.hashCode ^

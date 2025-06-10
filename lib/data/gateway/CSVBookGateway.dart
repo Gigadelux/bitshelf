@@ -58,30 +58,30 @@ class Csvbookgateway extends BookRepository { //TODO gateway testing
   Future<void> add(Book book) async {
     check();
     final books = await _readBooks();
-    if (books.any((b) => b.id == book.id)) {
-      throw Exception("Book with id \\${book.id} already exists");
+    if (books.any((b) => b.title == book.title && b.author == book.author)) {
+      throw Exception("Book with title '${book.title}' and author '${book.author}' already exists");
     }
     books.add(book);
     await _writeBooks(books);
   }
 
   @override
-  Future<void> delete(String id) async {
+  Future<void> delete(Book book) async {
     check();
     final books = await _readBooks();
-    books.removeWhere((b) => b.id == id);
+    books.removeWhere((b) => b.title == book.title && b.author == book.author);
     await _writeBooks(books);
   }
 
-  @override
-  Future<void> export(List<Book> toExport) async {
-    check();
-    final file = await _getCsvFile();
-    final rows = [_csvHeader(), ...toExport.map(_bookToCsvRow)];
-    final csv = const ListToCsvConverter().convert(rows);
-    await file.writeAsString(csv);
-    await _checkFileSize();
-  }
+  // @override
+  // Future<void> export(List<Book> toExport) async {
+  //   check();
+  //   final file = await _getCsvFile();
+  //   final rows = [_csvHeader(), ...toExport.map(_bookToCsvRow)];
+  //   final csv = const ListToCsvConverter().convert(rows);
+  //   await file.writeAsString(csv);
+  //   await _checkFileSize();
+  // }
 
   @override
   Future<List<Book>> getAll() async {
@@ -90,11 +90,11 @@ class Csvbookgateway extends BookRepository { //TODO gateway testing
   }
 
   @override
-  Future<Book?> getById(String id) async {
+  Future<Book?> getByTitleAndAuthor(String title, String author) async {
     check();
     final books = await _readBooks();
     try {
-      return books.firstWhere((b) => b.id == id);
+      return books.firstWhere((b) => b.title == title && b.author == author);
     } catch (_) {
       return null;
     }
@@ -104,9 +104,10 @@ class Csvbookgateway extends BookRepository { //TODO gateway testing
   Future<void> update(Book book) async {
     check();
     final books = await _readBooks();
-    final idx = books.indexWhere((b) => b.id == book.id);
-    if (idx == -1) throw Exception("Book with id \\${book.id} not found");
+    final idx = books.indexWhere((b) => b.title == book.title && b.author == book.author);
+    if (idx == -1) throw Exception("Book with title '${book.title}' and author '${book.author}' not found");
     books[idx] = book;
     await _writeBooks(books);
   }
+  
 }

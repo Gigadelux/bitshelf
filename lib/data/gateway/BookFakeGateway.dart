@@ -8,7 +8,6 @@ class BookFakeGateway extends BookRepository{
   Future<List<Book>> getAll() {
     return Future.value([
       Book(
-        id: '1',
         title: '1984',
         author: 'George Orwell',
         codeISBN: '9780451524935',
@@ -17,7 +16,6 @@ class BookFakeGateway extends BookRepository{
         status: 'letto',
       ),
       Book(
-        id: '2',
         title: 'Brave New World',
         author: 'Aldous Huxley',
         codeISBN: '9780060850524',
@@ -26,7 +24,6 @@ class BookFakeGateway extends BookRepository{
         status: 'da leggere',
       ),
       Book(
-        id: '3',
         title: 'Fahrenheit 451',
         author: 'Ray Bradbury',
         codeISBN: '9781451673319',
@@ -35,7 +32,6 @@ class BookFakeGateway extends BookRepository{
         status: 'in lettura',
       ),
       Book(
-        id: '4',
         title: 'The Hobbit',
         author: 'J.R.R. Tolkien',
         codeISBN: '9780547928227',
@@ -44,7 +40,6 @@ class BookFakeGateway extends BookRepository{
         status: 'letto',
       ),
       Book(
-        id: '5',
         title: 'To Kill a Mockingbird',
         author: 'Harper Lee',
         codeISBN: '9780061120084',
@@ -61,12 +56,7 @@ class BookFakeGateway extends BookRepository{
   }
   
   @override
-  Future<void> delete(String id) {
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Book?> getById(String id) {
+  Future<void> delete(Book book) {
     throw UnimplementedError();
   }
   
@@ -76,7 +66,8 @@ class BookFakeGateway extends BookRepository{
   }
   
   @override
-  Future<void> export(List<Book> toExport) {
+  Future<Book?> getByTitleAndAuthor(String title, String author) {
+    // TODO: implement getByTitleAndAuthor
     throw UnimplementedError();
   }
   

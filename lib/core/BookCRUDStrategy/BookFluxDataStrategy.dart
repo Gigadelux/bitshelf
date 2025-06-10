@@ -9,7 +9,7 @@ class Bookfluxdatastrategy extends Bookdatastrategy{
   Future<void> add(Book book) => bookRepository.add(book);
 
   @override
-  Future<void> delete(String id) => bookRepository.delete(id);
+  Future<void> delete(Book book) => bookRepository.delete(book);
 
   @override
   Future<void> update(Book book) => bookRepository.update(book);

@@ -30,14 +30,13 @@ class Booktable extends StatelessWidget {
                   header: const Text("Book List"),
                   rowsPerPage: 5,
                   columns: const [
-                    DataColumn(label: Text('ID')),
                     DataColumn(label: Text('Title')),
                     DataColumn(label: Text('Author')),
                     DataColumn(label: Text('ISBN')),
                     DataColumn(label: Text('Genre')),
                     DataColumn(label: Text('Review')),
                     DataColumn(label: Text('Status')),
-                    DataColumn(label: Text('Action')),
+                    DataColumn(label: Text('Edit')),
                   ],
                   source: BookDataSource(books, onActionPressed),
                 ),
@@ -64,7 +63,6 @@ class BookDataSource extends DataTableSource {
   DataRow getRow(int index) {
     final book = books[index];
     return DataRow(cells: [
-      DataCell(Text(book.id)),
       DataCell(Text(book.title)),
       DataCell(Text(book.author)),
       DataCell(Text(book.codeISBN)),
@@ -73,7 +71,7 @@ class BookDataSource extends DataTableSource {
       DataCell(Text(book.status)),
       DataCell(
         IconButton(
-          icon: Icon(Icons.more_vert),
+          icon: Icon(Icons.edit),
           onPressed: () => onActionPressed(book),
         ),
       ),
