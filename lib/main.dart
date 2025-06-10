@@ -1,4 +1,6 @@
 import 'package:bitshelf/services/BookDatasetService.dart';
+import 'package:bitshelf/services/Filter/FilterChainService.dart';
+import 'package:bitshelf/services/Filter/FilterChainState.dart';
 import 'package:flutter/material.dart';
 import 'package:bitshelf/view/ui/pages/HomePage.dart';
 import 'package:provider/provider.dart';
@@ -6,8 +8,10 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(
     MultiProvider(
-      providers: [
+      providers: [ //DO NOT CHANGE ORDER FOR *ANY REASON IN THE WORLD* (hint: constructors problem🙂)
         ChangeNotifierProvider(create: (_) => BookDatasetService()),
+        ChangeNotifierProvider(create: (_)=>FilterChainState()),
+        ChangeNotifierProvider(create: (context)=> FilterChainService(context)),
       ],
       child: MyApp(),
     ),
@@ -17,7 +21,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
