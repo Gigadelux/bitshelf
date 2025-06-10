@@ -32,6 +32,7 @@ class FilterChainService extends ChangeNotifier {
   }
 
   void applyFilters() {
+    filteredBooks = List.from(Provider.of<BookDatasetService>(context, listen: false).books);
     filteredBooks = head.filter(filteredBooks);
     notifyListeners();
   }
@@ -39,7 +40,7 @@ class FilterChainService extends ChangeNotifier {
   
   void updateTitleSearch(String title) {
       if (head is TitleSearchFilterHandler) {
-        (head as TitleSearchFilterHandler).paramether = title;
+        head = TitleSearchFilterHandler(paramether: title);
         applyFilters();
       }
   }

@@ -1,6 +1,6 @@
 import 'package:bitshelf/controllers/BookController.dart';
+import 'package:bitshelf/controllers/FilterController.dart';
 import 'package:bitshelf/data/models/Book.dart';
-import 'package:bitshelf/services/BookDatasetService.dart';
 import 'package:bitshelf/services/Filter/FilterChainService.dart';
 import 'package:bitshelf/view/ui/pages/BookPages/AddBookPage.dart';
 import 'package:bitshelf/view/ui/pages/BookPages/EditBookPage.dart';
@@ -22,10 +22,12 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
   Bookcontroller bookcontroller = Bookcontroller();
   String drawer = drawerV.values.keys.first; //default
   TextEditingController searchController = TextEditingController();
+  late FilterController filterController;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    filterController = FilterController(context);
     final dataset = Provider.of<FilterChainService>(context); //subscribe
     List<Book> booksData = dataset.filteredBooks;
     return Scaffold(
@@ -114,7 +116,7 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
                     width: MediaQuery.of(context).size.width/2.5,
                     child: TextField(
                       onChanged: (value) {
-                        
+                        filterController.search(value);
                       },
                     decoration: InputDecoration(
                       hintText: "Search books",

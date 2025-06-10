@@ -6,14 +6,12 @@ class TitleSearchFilterHandler extends FilterHandler{
 
   @override
   List<Book> filter(List<Book> books) {
-    List<Book> res = books.where((book)=> book.title.contains(paramether)).toList();
+    List<Book> res = books.where((book)=> book.title.toLowerCase().trim().contains(paramether.toLowerCase().trim())).toList();
     if(next == null){
       return res;
     }else{
       return next!.filter(res);
     }
   }
-  
-  set paramether(String value) => paramether = value;
 
 }
