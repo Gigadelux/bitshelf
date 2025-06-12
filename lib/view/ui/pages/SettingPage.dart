@@ -4,7 +4,6 @@ import 'package:bitshelf/data/gateway/CSVBookGateway.dart';
 import 'package:flutter/material.dart';
 import 'package:bitshelf/core/AppConfig.dart';
 import 'package:bitshelf/data/gateway/BookFakeGateway.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Settingpage extends StatefulWidget {
   const Settingpage({super.key});
@@ -137,19 +136,9 @@ class _SettingpageState extends State<Settingpage> {
                     tempSelectedStrategy = null;
                     tempConfig = null;
                   });
-                  Fluttertoast.showToast(
-                    msg: 'Settings saved successfully',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                  );
+                  _showDesktopToast(context, 'Settings saved successfully');
                 } catch (e) {
-                  Fluttertoast.showToast(
-                    msg: 'Error: $e',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.BOTTOM,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                  );
+                  _showDesktopToast(context, 'Error: $e', error: true);
                 }
               },
               child: const Text('Save Settings', style: TextStyle(color: Colors.white)),
@@ -158,5 +147,16 @@ class _SettingpageState extends State<Settingpage> {
         ],
       ),
     );
+  }
+
+  void _showDesktopToast(BuildContext context, String message, {bool error = false}) {
+    final color = error ? Colors.red : Colors.green;
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+      duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

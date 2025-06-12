@@ -85,11 +85,11 @@ class Book {
       throw ArgumentError('List must have exactly 6 elements');
     }
     return Book(
-      title: list[0] as String,
+      title: "${list[0]}",
       author: list[1] as String,
-      codeISBN: list[2] as String,
+      codeISBN: "${list[2]}",
       genre: list[3] as String,
-      review: list[4] as int,
+      review: list[4],
       status: list[5] as String,
     );
   }
@@ -125,9 +125,9 @@ class Book {
 
   factory Book.fromMap(Map<String, dynamic> map) {
     return Book(
-      title: map['title'] as String,
+      title: "${map['title']}",
       author: map['author'] as String,
-      codeISBN: map['codeISBN'] as String,
+      codeISBN: "${map['codeISBN']}",
       genre: map['genre'] as String,
       review: map['review'] as int,
       status: map['status'] as String,
