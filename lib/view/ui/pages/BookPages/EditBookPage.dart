@@ -1,3 +1,4 @@
+import 'package:bitshelf/controllers/BookController.dart';
 import 'package:bitshelf/data/models/Book.dart';
 import 'package:flutter/material.dart';
 
@@ -35,8 +36,9 @@ class EditBookPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           child: MaterialButton(
             color: Colors.red,
-            
-            onPressed: () {
+            onPressed: () async{
+              await Bookcontroller().deleteBook(book);
+              Navigator.pop(context);
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -56,15 +58,15 @@ class EditBookPage extends StatelessWidget {
         Expanded(
           child: ListView(
             children: [
-          ...fieldLabels.map(
-            (label) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: TextField(
-                controller: controllers[fieldLabels.indexOf(label)],
-            decoration: InputDecoration(
-              labelText: label,
-              border: OutlineInputBorder(),
-            ),
+              ...fieldLabels.map(
+                (label) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: TextField(
+                    controller: controllers[fieldLabels.indexOf(label)],
+                decoration: InputDecoration(
+                  labelText: label,
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
           ),
@@ -76,8 +78,12 @@ class EditBookPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           child: MaterialButton(
             color: Colors.yellow[800],
-            
-            onPressed: () {
+            onPressed: () async{
+              final Map<String, dynamic> newBookMap = {
+                for (int i = 0; i < fieldLabels.length; i++)
+                  fieldLabels[i]: int.tryParse(controllers[i].text)??controllers[i].text
+              };
+              await Bookcontroller().updateBook(book, Book.fromMap(newBookMap));
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

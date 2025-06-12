@@ -15,7 +15,7 @@ class Appconfig { //State pattern
   }
 
   Appconfig._internal() { //default
-    gatewayConfig = {"dbUrl":"","csv_path":"","csv_max_MB":""}; //MB
+    gatewayConfig = {"csv_path":"","csv_max_MB":""}; //MB
     bookRepository = BookFakeGateway(gatewayConfig);
     bookDataStrategy = Bookfluxdatastrategy(bookRepository);
   }

@@ -65,5 +65,34 @@ void main() {
         expect(allBooks, isEmpty);
       });
     });
+       group('File Size Validation Tests', () {
+      test('should throw exception when file exceeds max size', () async {
+        final smallSizeGateway = Csvbookgateway({
+          'csv_path': testCsvPath,
+          'csv_max_MB': '0.001' //very small limit...
+        });
+
+        final testBook = Book(
+          title: 'A' * 1000, //...to exceed size limit
+          author: 'B' * 1000,
+          codeISBN: 'C' * 1000,
+          genre: 'D' * 1000,
+          review: 5,
+          status: 'E' * 1000
+        );
+
+        expect(
+          () => smallSizeGateway.add(testBook),
+          throwsA(isA<Exception>().having(
+            (e) => e.toString(),
+            'message',
+            contains('exceeds max size')
+          ))
+        );
+      });
+
+    });
+
   });
+
 }

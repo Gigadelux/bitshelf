@@ -6,10 +6,26 @@ import 'package:bitshelf/data/repository/BookRepository.dart';
 class Csvbookgateway extends BookRepository { //TODO gateway testing
   @override
   Map<String, dynamic> config;
-  Csvbookgateway(this.config) : super(config);
+  
+  Csvbookgateway(this.config) : super(config) {
+    check();
+  }
   void check() {
     if (!config.containsKey("csv_path") || !config.containsKey("csv_max_MB")) {
       throw Exception("BAD GATEWAY: Error configuration not valid for CSV gateway");
+    }
+    final csvPath = config["csv_path"];
+    final file = File(csvPath);
+    if (!file.existsSync()) {
+      throw Exception("BAD GATEWAY: CSV file does not exist at path '$csvPath'");
+    }
+    if (!csvPath.toLowerCase().endsWith('.csv')) {
+      throw Exception("BAD GATEWAY: File at '$csvPath' is not a CSV file");
+    }
+    final maxMB = double.tryParse(config["csv_max_MB"].toString()) ?? 1;
+    final maxBytes = (maxMB * 1024 * 1024).toInt();
+    if (file.lengthSync() > maxBytes) {
+      throw Exception("BAD GATEWAY: CSV file exceeds max size of ${config["csv_max_MB"]} MB");
     }
   }
 

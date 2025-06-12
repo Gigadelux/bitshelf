@@ -4,10 +4,8 @@ import 'package:bitshelf/data/models/Book.dart';
 import 'package:bitshelf/services/BookDatasetService.dart';
 import 'package:bitshelf/services/Filter/FilterChainState.dart';
 import 'package:bitshelf/services/Filter/FilterFactory.dart';
-import 'package:bitshelf/services/Filter/handlers/AuthorFilterHandler.dart';
 import 'package:bitshelf/services/Filter/handlers/FilterHandler.dart';
 import 'package:bitshelf/services/Filter/handlers/TitleSearchFilterHandler.dart';
-import 'package:bitshelf/view/ui/widgets/drawers/drawerValues.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,22 +1,23 @@
-import 'package:bitshelf/core/AppConfig.dart';
 import 'package:bitshelf/data/models/Book.dart';
 import 'package:bitshelf/services/BookDatasetService.dart';
+import 'package:bitshelf/services/ExporterService.dart';
 
 class Bookcontroller {
   Future<void> load_books()async{
      BookDatasetService().importBooks();
   }
   Future<void> addBook(Book book) async {
+    BookDatasetService().addBook(book);
   }
 
-  Future<void> updateBook(Book book) async {
+  Future<void> updateBook(Book oldBook, Book newBook) async {
+    BookDatasetService().updateBook(oldBook, newBook);
   }
 
-  Future<void> deleteBook(String id) async {
+  Future<void> deleteBook(Book book) async {
+    BookDatasetService().removeBook(book);
   }
-
-  Future<Book?> getBookById(String id) async {
-    return null;
-  
+  Future<void> exportBooks(String path) async{
+    await ExporterService().export(path);
   }
 }

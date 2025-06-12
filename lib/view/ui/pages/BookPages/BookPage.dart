@@ -6,6 +6,7 @@ import 'package:bitshelf/view/ui/pages/BookPages/AddBookPage.dart';
 import 'package:bitshelf/view/ui/pages/BookPages/EditBookPage.dart';
 import 'package:bitshelf/view/ui/widgets/bookTable.dart';
 import 'package:bitshelf/view/ui/widgets/drawers/DrawerTree.dart';
+import 'package:bitshelf/view/ui/widgets/popUpStringMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bitshelf/view/ui/widgets/drawers/drawerValues.dart' as drawerV;
@@ -81,7 +82,16 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
                       ),
                       SizedBox(width: 10,),
                         MaterialButton(
-                        onPressed: (){},
+                        onPressed: ()async{
+                          String path = "";
+                          PopUpStringMenu(
+                            config: {"enter_path":"etc/"}, 
+                            onSubmit: (values){
+                              path = values["enter_path"]!;
+                            }
+                          ).popItUp(context);
+                          await bookcontroller.exportBooks(path);
+                        },
                         color: const Color.fromARGB(255, 0, 94, 255),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),

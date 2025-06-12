@@ -1,3 +1,4 @@
+import 'package:bitshelf/controllers/BookController.dart';
 import 'package:bitshelf/data/models/Book.dart';
 import 'package:flutter/material.dart';
 
@@ -5,9 +6,13 @@ class AddBookPage extends StatelessWidget {
   AddBookPage({super.key});
 
   final List<String> fieldLabels = Book.empty().toMap().keys.toList();
+  final Bookcontroller bookcontroller = Bookcontroller();
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, TextEditingController> controllers = {
+      for (var label in fieldLabels) label: TextEditingController(),
+    };
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -34,10 +39,11 @@ class AddBookPage extends StatelessWidget {
             (label) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
-            decoration: InputDecoration(
-              labelText: label,
-              border: OutlineInputBorder(),
-            ),
+                controller: controllers[label],
+                decoration: InputDecoration(
+                  labelText: label,
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
           ),
@@ -49,9 +55,13 @@ class AddBookPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           child: MaterialButton(
             color: Colors.blue,
-            
-            onPressed: () {
-          // Add book logic here
+            onPressed: () async{
+              final Map<String, dynamic> bookMap = {
+                for (var entry in controllers.entries) entry.key: int.tryParse(entry.value.text)?? entry.value.text
+              };
+              await bookcontroller.addBook(
+                Book.fromMap(bookMap)
+              );
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

@@ -4,9 +4,10 @@ import 'package:csv/csv.dart';
 import 'dart:io';
 
 class ExporterService {
-  final BookDatasetService _bookDatasetService = BookDatasetService(); 
+  final BookDatasetService _bookDatasetService = BookDatasetService(); //getInstance
   
   Future<void> export(String path) async {
+    if(path.isEmpty) throw ArgumentError("path cannot be empty!");
     final books = _bookDatasetService.books;
     final rows = [_csvHeader(), ...books.map(_bookToCsvRow)];
     final csv = const ListToCsvConverter().convert(rows);
