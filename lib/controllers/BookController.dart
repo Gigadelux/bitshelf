@@ -20,4 +20,7 @@ class Bookcontroller {
   Future<void> exportBooks(String path) async{
     await ExporterService().export(path);
   }
+  Future<void> commitChanges()async{
+    await BookDatasetService().applyChanges();
+  }
 }
