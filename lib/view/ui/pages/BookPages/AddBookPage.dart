@@ -1,5 +1,6 @@
 import 'package:bitshelf/controllers/BookController.dart';
 import 'package:bitshelf/data/models/Book.dart';
+import 'package:bitshelf/view/ui/widgets/desktopToast.dart';
 import 'package:flutter/material.dart';
 
 class AddBookPage extends StatelessWidget {
@@ -56,12 +57,18 @@ class AddBookPage extends StatelessWidget {
           child: MaterialButton(
             color: Colors.blue,
             onPressed: () async{
-              final Map<String, dynamic> bookMap = {
-                for (var entry in controllers.entries) entry.key: int.tryParse(entry.value.text)?? entry.value.text
-              };
-              await bookcontroller.addBook(
-                Book.fromMap(bookMap)
-              );
+              try{
+                final Map<String, dynamic> bookMap = {
+                  for (var entry in controllers.entries) entry.key: int.tryParse(entry.value.text)?? entry.value.text
+                };
+                await bookcontroller.addBook(
+                  Book.fromMap(bookMap)
+                );
+                Desktoptoast().showDesktopToast(context, "Added successful");
+              }catch(error){
+                Desktoptoast().showDesktopToast(context, "Error $error");
+              }
+              Navigator.pop(context);
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

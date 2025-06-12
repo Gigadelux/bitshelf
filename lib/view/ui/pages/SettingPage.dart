@@ -1,6 +1,7 @@
 import 'package:bitshelf/core/BookCRUDStrategy/BookDeferredDataStrategy.dart';
 import 'package:bitshelf/core/BookCRUDStrategy/BookFluxDataStrategy.dart';
 import 'package:bitshelf/data/gateway/CSVBookGateway.dart';
+import 'package:bitshelf/view/ui/widgets/desktopToast.dart';
 import 'package:flutter/material.dart';
 import 'package:bitshelf/core/AppConfig.dart';
 import 'package:bitshelf/data/gateway/BookFakeGateway.dart';
@@ -136,9 +137,9 @@ class _SettingpageState extends State<Settingpage> {
                     tempSelectedStrategy = null;
                     tempConfig = null;
                   });
-                  _showDesktopToast(context, 'Settings saved successfully');
+                  Desktoptoast().showDesktopToast(context, 'Settings saved successfully');
                 } catch (e) {
-                  _showDesktopToast(context, 'Error: $e', error: true);
+                  Desktoptoast().showDesktopToast(context, 'Error: $e', error: true);
                 }
               },
               child: const Text('Save Settings', style: TextStyle(color: Colors.white)),
@@ -149,14 +150,4 @@ class _SettingpageState extends State<Settingpage> {
     );
   }
 
-  void _showDesktopToast(BuildContext context, String message, {bool error = false}) {
-    final color = error ? Colors.red : Colors.green;
-    final snackBar = SnackBar(
-      content: Text(message),
-      backgroundColor: color,
-      duration: const Duration(seconds: 2),
-      behavior: SnackBarBehavior.floating,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 }
