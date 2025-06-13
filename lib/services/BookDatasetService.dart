@@ -59,7 +59,7 @@ class BookDatasetService extends ChangeNotifier { //Observer pattern
     Book.check(newBook);
     Bookdatastrategy gatewayStrategy = Appconfig().bookDataStrategy;
     await gatewayStrategy.update(newBook);
-    int index = _books.indexOf(oldBook);
+    int index = _books.indexWhere((b) => b.codeISBN == oldBook.codeISBN);
     if (index != -1) {
       _books[index] = newBook;
       _getPendings();

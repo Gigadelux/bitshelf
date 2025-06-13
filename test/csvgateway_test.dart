@@ -13,6 +13,7 @@ void main() {
     setUp(() async {
       tempDir = await Directory.systemTemp.createTemp('csv_gateway_test_');
       testCsvPath = path.join(tempDir.path, 'test_books.csv');
+      await File(testCsvPath).writeAsString('');
       gateway = Csvbookgateway({
         'csv_path': testCsvPath,
         'csv_max_MB': '1'
@@ -34,7 +35,7 @@ void main() {
           codeISBN: '999-999-999',
           genre: 'Test Genre',
           review: 3,
-          status: 'to read'
+          status: 'da leggere',
         );
 
         await gateway.add(originalBook);
@@ -47,13 +48,13 @@ void main() {
         // Update
         final updatedBook = foundBook.copyWith(
           review: 5,
-          status: 'completed'
+          status: 'letto',
         );
         await gateway.update(updatedBook);
 
         foundBook = await gateway.getByTitleAndAuthor('CRUD Test Book', 'CRUD Author');
         expect(foundBook!.review, equals(5));
-        expect(foundBook.status, equals('completed'));
+        expect(foundBook.status, equals('letto'));
 
         // Delete
         await gateway.delete(foundBook);
@@ -65,7 +66,7 @@ void main() {
         expect(allBooks, isEmpty);
       });
     });
-       group('File Size Validation Tests', () {
+    group('File Size Validation Tests', () {
       test('should throw exception when file exceeds max size', () async {
         final smallSizeGateway = Csvbookgateway({
           'csv_path': testCsvPath,
@@ -78,10 +79,10 @@ void main() {
           codeISBN: 'C' * 1000,
           genre: 'D' * 1000,
           review: 5,
-          status: 'E' * 1000
+          status: 'da leggere',
         );
 
-        expect(
+        await expectLater(
           () => smallSizeGateway.add(testBook),
           throwsA(isA<Exception>().having(
             (e) => e.toString(),
@@ -90,9 +91,6 @@ void main() {
           ))
         );
       });
-
     });
-
   });
-
 }
