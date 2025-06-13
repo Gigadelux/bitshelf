@@ -1,11 +1,13 @@
 import 'package:bitshelf/data/models/Book.dart';
 import 'package:bitshelf/services/BookDatasetService.dart';
+import 'package:bitshelf/services/encryption/EncryptionService.dart';
 import 'package:csv/csv.dart';
 import 'dart:io';
 
 class ExporterService {
   final BookDatasetService _bookDatasetService = BookDatasetService(); //getInstance
-  
+  final EncryptionService? encryptionService;
+  ExporterService([this.encryptionService]);
   Future<void> export(String path) async {
     if(path.isEmpty) throw ArgumentError("path cannot be empty!");
     final books = _bookDatasetService.books;
