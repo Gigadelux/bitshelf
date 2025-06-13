@@ -66,7 +66,7 @@ class AddBookPage extends StatelessWidget {
                 );
                 Desktoptoast().showDesktopToast(context, "Added successful");
               }catch(error){
-                Desktoptoast().showDesktopToast(context, "Error $error");
+                Desktoptoast().showDesktopToast(context, "Error $error", error: true);
               }
               Navigator.pop(context);
             },

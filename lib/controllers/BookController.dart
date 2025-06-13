@@ -23,4 +23,7 @@ class Bookcontroller {
   Future<void> commitChanges()async{
     await BookDatasetService().applyChanges();
   }
+  Future<void> sortBooks(String field, {bool ascending = true})async{
+    await BookDatasetService().sortBooks(field,ascending);
+  }
 }

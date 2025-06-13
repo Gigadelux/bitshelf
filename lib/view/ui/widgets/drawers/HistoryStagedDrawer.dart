@@ -48,10 +48,10 @@ class HistoryStagedDrawer extends StatelessWidget {
                   textColor: Colors.blue,
                   onPressed: () async{
                     try{
-                      Bookcontroller().commitChanges();
+                      await Bookcontroller().commitChanges();
                       Desktoptoast().showDesktopToast(context, "Changes committed successfully!");
                     }catch(e){
-                      Desktoptoast().showDesktopToast(context, "Error $e");
+                      Desktoptoast().showDesktopToast(context, "Error $e", error: true);
                     }
                     Navigator.pop(context);
                   },

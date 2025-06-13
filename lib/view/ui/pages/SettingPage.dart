@@ -1,3 +1,4 @@
+import 'package:bitshelf/controllers/BookController.dart';
 import 'package:bitshelf/core/BookCRUDStrategy/BookDeferredDataStrategy.dart';
 import 'package:bitshelf/core/BookCRUDStrategy/BookFluxDataStrategy.dart';
 import 'package:bitshelf/data/gateway/CSVBookGateway.dart';
@@ -117,7 +118,6 @@ class _SettingpageState extends State<Settingpage> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               onPressed: () {
                 try {
-                  // Apply all changes at once
                   for (var key in configKeys) {
                     appConfig.gatewayConfig[key] = controllers[key]!.text;
                   }
@@ -137,7 +137,8 @@ class _SettingpageState extends State<Settingpage> {
                     tempSelectedStrategy = null;
                     tempConfig = null;
                   });
-                  Desktoptoast().showDesktopToast(context, 'Settings saved successfully');
+                  Bookcontroller().load_books();
+                  Desktoptoast().showDesktopToast(context, 'Settings saved successfully, books loaded');
                 } catch (e) {
                   Desktoptoast().showDesktopToast(context, 'Error: $e', error: true);
                 }

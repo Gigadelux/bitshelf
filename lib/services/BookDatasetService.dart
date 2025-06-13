@@ -21,7 +21,9 @@ class BookDatasetService extends ChangeNotifier { //Observer pattern
 
   void _getPendings(){
     try{
-      Map<Book,CrudOperation> pendingOps = (Appconfig().bookDataStrategy as Bookdeferreddatastrategy).pending_edits;
+      Map<Book,CrudOperation> pendingOps = Map<Book, CrudOperation>.from(
+        (Appconfig().bookDataStrategy as Bookdeferreddatastrategy).pending_edits
+      );
       _pending = pendingOps;
     }catch(e){print("not pending operations, continue...");}
   }
@@ -67,5 +69,29 @@ class BookDatasetService extends ChangeNotifier { //Observer pattern
   Future<void> applyChanges() async{
     Bookdatastrategy bookdatastrategy = Appconfig().bookDataStrategy;
     bookdatastrategy.commit();
+    _pending.clear();
+  }
+
+  Future<void> sortBooks(String field,bool ascending) async{ //inefficient but scalable
+    int compare(Book a, Book b){
+      Map aMap = a.toMap();
+      Map bMap = b.toMap();
+      for(String key in aMap.keys.toList()){
+        if(key==field) return aMap[key].compareTo(bMap[key]);
+      }
+      return 0;
+    }
+    if(field == "none"){
+      await importBooks();
+      if(!ascending){
+        List<Book> tmp = [..._books.reversed];
+        _books.clear();
+        _books.addAll(tmp);
+        print(_books);
+      }
+    }else{
+      _books.sort((a,b)=> compare(a, b)*(ascending? 1:-1));
+    }
+    notifyListeners();
   }
 }

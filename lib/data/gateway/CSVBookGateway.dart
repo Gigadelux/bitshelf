@@ -56,7 +56,7 @@ class Csvbookgateway extends BookRepository { //TODO gateway testing
   Future<void> _writeBooks(List<Book> books) async {
     final file = await _getCsvFile();
     final rows = [_csvHeader(), ...books.map(_bookToCsvRow)];
-    final csv = const ListToCsvConverter().convert(rows);
+    final csv = const ListToCsvConverter(eol: '\n').convert(rows);
     await file.writeAsString(csv);
     await _checkFileSize();
   }
@@ -88,16 +88,6 @@ class Csvbookgateway extends BookRepository { //TODO gateway testing
     books.removeWhere((b) => b.title == book.title && b.author == book.author);
     await _writeBooks(books);
   }
-
-  // @override
-  // Future<void> export(List<Book> toExport) async {
-  //   check();
-  //   final file = await _getCsvFile();
-  //   final rows = [_csvHeader(), ...toExport.map(_bookToCsvRow)];
-  //   final csv = const ListToCsvConverter().convert(rows);
-  //   await file.writeAsString(csv);
-  //   await _checkFileSize();
-  // }
 
   @override
   Future<List<Book>> getAll() async {

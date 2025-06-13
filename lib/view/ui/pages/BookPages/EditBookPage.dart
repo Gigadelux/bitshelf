@@ -1,5 +1,6 @@
 import 'package:bitshelf/controllers/BookController.dart';
 import 'package:bitshelf/data/models/Book.dart';
+import 'package:bitshelf/view/ui/widgets/desktopToast.dart';
 import 'package:flutter/material.dart';
 
 class EditBookPage extends StatelessWidget {
@@ -37,7 +38,12 @@ class EditBookPage extends StatelessWidget {
           child: MaterialButton(
             color: Colors.red,
             onPressed: () async{
-              await Bookcontroller().deleteBook(book);
+              try{
+                await Bookcontroller().deleteBook(book);
+                Desktoptoast().showDesktopToast(context, "Deleted successful!", error: true);
+              }catch(e){
+                Desktoptoast().showDesktopToast(context, "Error $e", error: true);
+              }
               Navigator.pop(context);
             },
             child: Padding(
@@ -79,11 +85,17 @@ class EditBookPage extends StatelessWidget {
           child: MaterialButton(
             color: Colors.yellow[800],
             onPressed: () async{
-              final Map<String, dynamic> newBookMap = {
-                for (int i = 0; i < fieldLabels.length; i++)
-                  fieldLabels[i]: int.tryParse(controllers[i].text)??controllers[i].text
-              };
-              await Bookcontroller().updateBook(book, Book.fromMap(newBookMap));
+              try{
+                final Map<String, dynamic> newBookMap = {
+                  for (int i = 0; i < fieldLabels.length; i++)
+                    fieldLabels[i]: int.tryParse(controllers[i].text)??controllers[i].text
+                };
+                await Bookcontroller().updateBook(book, Book.fromMap(newBookMap));
+                Desktoptoast().showDesktopToast(context, "Updated successful");
+              }catch(error){
+                Desktoptoast().showDesktopToast(context, "Error: $error", error: true);
+              }
+              Navigator.pop(context);
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

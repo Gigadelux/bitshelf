@@ -5,6 +5,7 @@ import 'package:bitshelf/services/Filter/FilterChainService.dart';
 import 'package:bitshelf/view/ui/pages/BookPages/AddBookPage.dart';
 import 'package:bitshelf/view/ui/pages/BookPages/EditBookPage.dart';
 import 'package:bitshelf/view/ui/widgets/bookTable.dart';
+import 'package:bitshelf/view/ui/widgets/desktopToast.dart';
 import 'package:bitshelf/view/ui/widgets/drawers/DrawerTree.dart';
 import 'package:bitshelf/view/ui/widgets/popUpStringMenu.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
   String drawer = drawerV.values.keys.first; //default
   TextEditingController searchController = TextEditingController();
   late FilterController filterController;
+  String defaultSorting = "entry";
+  bool defaultSortingMode = true; //ascending?
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
     filterController = FilterController(context);
     final dataset = Provider.of<FilterChainService>(context); //subscribe
     List<Book> booksData = dataset.filteredBooks;
+    List<String> sortMenuValues = ["entry", ...Book.empty().toMap().keys];
     return Scaffold(
       endDrawer: DrawerTree(operation: drawer),
       body: Container(
@@ -90,7 +94,12 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
                               path = values["enter_path"]!;
                             }
                           ).popItUp(context);
-                          await bookcontroller.exportBooks(path);
+                          try{
+                            await bookcontroller.exportBooks(path);
+                            Desktoptoast().showDesktopToast(context, "Export successful");
+                          }catch(e){
+                            Desktoptoast().showDesktopToast(context, "Error $e", error: true);
+                          }
                         },
                         color: const Color.fromARGB(255, 0, 94, 255),
                         shape: RoundedRectangleBorder(
@@ -161,6 +170,53 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
                     ),
                   ),
                 ),
+                SizedBox(width: 18,),
+                Text("Sort by: "),
+                SizedBox(width: 5,),
+                DropdownButton<String>(
+                  value: defaultSorting,
+                  items: sortMenuValues.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value[0].toUpperCase() + value.substring(1)),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) async{
+                    setState(() {
+                      defaultSorting = newValue!;
+                    });
+                    if(newValue=="entry") {
+                      await bookcontroller.sortBooks("none", ascending: defaultSortingMode);
+                    } else{
+                      await bookcontroller.sortBooks(newValue!, ascending: defaultSortingMode);
+                    }
+                  },
+                  underline: Container(
+                    height: 2,
+                    color: const Color.fromARGB(255, 0, 94, 255),
+                  ),
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(width: 18,),
+                Text("Descending"),
+                Switch(
+                  value: defaultSortingMode,
+                  onChanged: (bool value) async{
+                    print("Switch toggled: $value");
+                    setState(() {
+                      defaultSortingMode = value;
+                    });
+                    await bookcontroller.sortBooks(defaultSorting=="entry"?"none":defaultSorting, ascending: defaultSortingMode);
+                  },
+                  activeColor: const Color.fromARGB(255, 0, 94, 255),
+                  inactiveTrackColor: Colors.blueGrey,
+                ),
+                Text("Ascending"),
               ],
             ),
             SizedBox(height: 30,),
