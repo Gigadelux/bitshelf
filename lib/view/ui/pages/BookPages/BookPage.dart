@@ -72,7 +72,13 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
                           borderRadius: BorderRadius.circular(12),
                         ),
                         onPressed: ()async{
-                          await bookcontroller.load_books();
+                          PopUpStringMenu(
+                            config: {}, 
+                            title: "Are you sure? Pending operations will be deleted", 
+                            onSubmit: (a)async{
+                              await bookcontroller.load_books();
+                            }
+                          ).popItUp(context);
                         },
                         child: Padding(
                           padding: EdgeInsets.all(10),
@@ -89,17 +95,18 @@ class _BookpageState extends State<Bookpage> with AutomaticKeepAliveClientMixin{
                         onPressed: ()async{
                           String path = "";
                           PopUpStringMenu(
+                            title: "Export menu",
                             config: {"enter_path":"etc/"}, 
-                            onSubmit: (values){
+                            onSubmit: (values)async{
                               path = values["enter_path"]!;
+                              try{
+                                await bookcontroller.exportBooks(path);
+                                Desktoptoast().showDesktopToast(context, "Export successful");
+                              }catch(e){
+                                Desktoptoast().showDesktopToast(context, "Error $e", error: true);
+                              }
                             }
                           ).popItUp(context);
-                          try{
-                            await bookcontroller.exportBooks(path);
-                            Desktoptoast().showDesktopToast(context, "Export successful");
-                          }catch(e){
-                            Desktoptoast().showDesktopToast(context, "Error $e", error: true);
-                          }
                         },
                         color: const Color.fromARGB(255, 0, 94, 255),
                         shape: RoundedRectangleBorder(

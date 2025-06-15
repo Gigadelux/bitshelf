@@ -37,6 +37,9 @@ class Bookdeferreddatastrategy extends Bookdatastrategy{
       return Future.value();
     }
   }
+  void clear(){
+    _pending.clear();
+  }
 
   @override
   Future<void> commit() async{

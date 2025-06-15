@@ -7,12 +7,25 @@ class ExporterService {
   final BookDatasetService _bookDatasetService = BookDatasetService(); //getInstance
   
   Future<void> export(String path) async {
+    if (!isRunningAsAdmin()) {
+      throw Exception('Administrator privileges are required to export to this location.');
+    }
     if(path.isEmpty) throw ArgumentError("path cannot be empty!");
     final books = _bookDatasetService.books;
     final rows = [_csvHeader(), ...books.map(_bookToCsvRow)];
     final csv = const ListToCsvConverter().convert(rows);
     final file = await _getCsvFile(path);
     await file.writeAsString(csv);
+  }
+
+  bool isRunningAsAdmin() {
+    if (!Platform.isWindows) return true;
+    try {
+      ProcessResult result = Process.runSync('net', ['session']);
+      return result.exitCode == 0;
+    } catch (_) {
+      return false;
+    }
   }
 
   List<String> _csvHeader() {

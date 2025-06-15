@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class PopUpStringMenu{
   final Map<String, String> config; // key: label, value: initial value
+  final String title;
   final void Function(Map<String, String>) onSubmit;
 
   const PopUpStringMenu({
     required this.config,
+    required this.title,
     required this.onSubmit,
   });
   
@@ -18,7 +20,7 @@ class PopUpStringMenu{
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Edit Configuration'),
+          title: Text(title),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,

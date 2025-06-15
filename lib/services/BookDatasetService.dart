@@ -49,6 +49,10 @@ class BookDatasetService extends ChangeNotifier { //Observer pattern
   }
 
   Future<void> importBooks() async{
+    try{
+      (Appconfig().bookDataStrategy as Bookdeferreddatastrategy).clear();
+      _pending.clear();
+    }catch(e){}
     BookRepository gatewayRepository = Appconfig().bookRepository;
     _books
       ..clear()
